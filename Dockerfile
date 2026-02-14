@@ -6,4 +6,5 @@ COPY backend ./backend
 
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
-CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"]
+
