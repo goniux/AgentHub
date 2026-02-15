@@ -8,21 +8,29 @@ export default function CreateAgent() {
   const [prompt, setPrompt] = useState("");
 
   const submitAgent = async () => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/agents`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        description,
-        prompt,
-      }),
-    });
+  const token = localStorage.getItem("agenthub_token");
 
-    alert("Agent created!");
-    setName("");
-    setDescription("");
-    setPrompt("");
-  };
+  if (!token) {
+    alert("Please login first!");
+    return;
+  }
+
+  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/agents`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name,
+      description,
+      prompt,
+    }),
+  });
+
+  alert("Agent created!");
+};
+
 
   return (
     <main className="p-8 max-w-xl mx-auto">
